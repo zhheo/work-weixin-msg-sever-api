@@ -25,12 +25,10 @@ def sendText(tocken,agentId,msg):
     requests.post(sendUrl,data)
 
 def main(event, context):
-    datas = json.dumps(event, indent = 2)
-    get_Data=json.loads(datas)
-    apiid=get_Data.get('id')
-    apisecert=get_Data.get('secert')
-    apiagentId = get_Data.get('agentId')
-    apimsg = get_Data.get('msg')
+    apiid=event['queryStringParameters']['id']
+    apisecert=event['queryStringParameters']['secert']
+    apiagentId = event['queryStringParameters']['agentId']
+    apimsg = event['queryStringParameters']['msg']
     getTocken(id=apiid,secert=apisecert,msg=apimsg,agentId=apiagentId)
     # print(event)
     # print("Received event: " + json.dumps(event, indent = 2)) 
