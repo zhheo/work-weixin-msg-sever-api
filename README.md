@@ -1,10 +1,10 @@
 # work-weixin-msg-sever-api
 
-使用腾讯云函数和企业微信给自己微信发送消息
+使用腾讯云函数和企业微信给自己微信发送消息的API
 
-## 开发中
+## 部署教程
 
-目前还处于开发阶段
+[立即前往](https://blog.zhheo.com/p/1e9f35bc.html)
 
 ## 发送方式
 
