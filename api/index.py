@@ -35,18 +35,24 @@ class handler(BaseHTTPRequestHandler):
         querys = {k: v[0] for k, v in querys.items()}
 
         # 执行方法
-        apiid=querys['id']
-        apisecert=querys['secert']
-        apiagentId = querys['agentId']
-        apimsg = querys['msg']
-        getTocken(id=apiid,secert=apisecert,msg=apimsg,agentId=apiagentId)
+        try:
+            apiid=querys['id']
+            apisecert=querys['secert']
+            apiagentId = querys['agentId']
+            apimsg = querys['msg']
+        except:
+            apimsg = '有必填参数没有填写'
+            status = 1
+        else:
+            getTocken(id=apiid,secert=apisecert,msg=apimsg,agentId=apiagentId)
+            status = 0
 
         self.send_response(200)
         self.send_header('Access-Control-Allow-Origin', '*')
         self.send_header('Content-type', 'application/json')
         self.end_headers()
         self.wfile.write(json.dumps({
-            "status":"0",
+            "status":status,
             "msg":apimsg
         }).encode('utf-8'))
         return

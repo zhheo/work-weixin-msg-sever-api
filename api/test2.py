@@ -19,9 +19,9 @@ def sendText(tocken,agentId,msg):
     data = json.dumps({
         "safe": 0,
         "touser" : "@all",
-        "msgtype" : "text",
+        "msgtype" : "markdown",
         "agentid" : agentId,
-        "text" : {
+        "markdown" : {
             "content" : msg
         }
     })
