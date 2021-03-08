@@ -26,6 +26,7 @@ def sendText(tocken,agentId,msg):
         }
     })
     requests.post(sendUrl,data)
+    return '发送成功'
 
 class handler(BaseHTTPRequestHandler):
     def do_GET(self):
@@ -39,14 +40,24 @@ class handler(BaseHTTPRequestHandler):
         apisecert=querys['secert']
         apiagentId = querys['agentId']
         apimsg = querys['msg']
-        getTocken(id=apiid,secert=apisecert,msg=apimsg,agentId=apiagentId)
+
+        if apiagentId && apiid && apimsg && apisecert:
+            funcinfo = getTocken(id=apiid,secert=apisecert,msg=apimsg,agentId=apiagentId)
+            backmsg = json.dumps({
+            "status":"0",
+            "msg":apimsg,
+            "info": funcinfo
+        }
+        else:
+            backmsg = json.dumps({
+            "status":"1",
+            "msg":apimsg,
+            "info":"缺少参数，发送失败，请检查是否有参数缺少"
+        }
 
         self.send_response(200)
         self.send_header('Access-Control-Allow-Origin', '*')
         self.send_header('Content-type', 'application/json')
         self.end_headers()
-        self.wfile.write(json.dumps({
-            "status":"0",
-            "msg":apimsg
-        }).encode('utf-8'))
+        self.wfile.write(backmsg).encode('utf-8'))
         return
