@@ -1,7 +1,7 @@
 # -*- coding: utf8 -*-
 import requests
 import json
-from http.server import HTTPServer,BaseHTTPRequestHandler
+from http.server import BaseHTTPRequestHandler
 import json
 import urllib.parse as urlparse
 
