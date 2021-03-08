@@ -19,9 +19,9 @@ def sendText(tocken,agentId,msg):
     data = json.dumps({
         "safe": 0,
         "touser" : "@all",
-        "msgtype" : "markdown",
+        "msgtype" : "text",
         "agentid" : agentId,
-        "markdown" : {
+        "text" : {
             "content" : msg
         }
     })
@@ -44,8 +44,13 @@ class handler(BaseHTTPRequestHandler):
             apimsg = '有必填参数没有填写'
             status = 1
         else:
-            getTocken(id=apiid,secert=apisecert,msg=apimsg,agentId=apiagentId)
-            status = 0
+            try:
+                getTocken(id=apiid,secert=apisecert,msg=apimsg,agentId=apiagentId)
+            except:
+                status = 1
+                apimsg = '主程序运行时出现错误'
+            else:
+                status = 0
 
         self.send_response(200)
         self.send_header('Access-Control-Allow-Origin', '*')
