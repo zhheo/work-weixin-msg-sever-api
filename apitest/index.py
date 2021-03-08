@@ -1,7 +1,7 @@
 # -*- coding: utf8 -*-
 import requests
 import json
-from http.server import BaseHTTPRequestHandler
+from http.server import HTTPServer,BaseHTTPRequestHandler
 import json
 import urllib.parse as urlparse
 
@@ -12,6 +12,7 @@ def getTocken(id,secert,msg,agentId):
     tocken_json = json.loads(r.text)
     # print(tocken_json['access_token'])
     sendText(tocken=tocken_json['access_token'],agentId=agentId,msg=msg)
+    return ['0','发送成功']
 
 def sendText(tocken,agentId,msg):
     sendUrl = "https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token=" + tocken
@@ -26,7 +27,6 @@ def sendText(tocken,agentId,msg):
         }
     })
     requests.post(sendUrl,data)
-    return '发送成功'
 
 class handler(BaseHTTPRequestHandler):
     def do_GET(self):
@@ -41,23 +41,32 @@ class handler(BaseHTTPRequestHandler):
         apiagentId = querys['agentId']
         apimsg = querys['msg']
 
-        if apiagentId && apiid && apimsg && apisecert:
-            funcinfo = getTocken(id=apiid,secert=apisecert,msg=apimsg,agentId=apiagentId)
-            backmsg = json.dumps({
-            "status":"0",
-            "msg":apimsg,
-            "info": funcinfo
-        }
+        if apiagentId and apiid and apimsg and apisecert:
+            funcback = getTocken(id=apiid,secert=apisecert,msg=apimsg,agentId=apiagentId)
+            funcinfo = funcback[1]
+            funcstatus = funcback[0]
         else:
-            backmsg = json.dumps({
-            "status":"1",
-            "msg":apimsg,
-            "info":"缺少参数，发送失败，请检查是否有参数缺少"
-        }
+            funcinfo = '缺少参数，发送失败，请检查是否有参数缺少'
+            funcstatus = '1'
 
         self.send_response(200)
         self.send_header('Access-Control-Allow-Origin', '*')
         self.send_header('Content-type', 'application/json')
         self.end_headers()
-        self.wfile.write(backmsg).encode('utf-8'))
+        backmsg = json.dumps({
+            "status":funcstatus,
+            "msg":apimsg,
+            "info": funcinfo
+        })
+
+        self.wfile.write(backmsg).encode('utf-8')
         return
+
+
+# host = ('localhost', 7777)
+# # host = ('0.0.0.0', 7777)
+
+# if __name__ == '__main__':
+#     server = HTTPServer(host, handler)
+#     print("Starting Server....")
+#     server.serve_forever()
