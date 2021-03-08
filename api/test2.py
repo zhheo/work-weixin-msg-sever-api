@@ -39,14 +39,20 @@ class handler(BaseHTTPRequestHandler):
         apisecert=querys['secert']
         apiagentId = querys['agentId']
         apimsg = querys['msg']
-        getTocken(id=apiid,secert=apisecert,msg=apimsg,agentId=apiagentId)
+
+        if apiagentId and apiid and apimsg and apisecert:
+            getTocken(id=apiid,secert=apisecert,msg=apimsg,agentId=apiagentId)
+            status = 0
+        else:
+            apimsg = '有必填参数没有填写'
+            status = 1
 
         self.send_response(200)
         self.send_header('Access-Control-Allow-Origin', '*')
         self.send_header('Content-type', 'application/json')
         self.end_headers()
         self.wfile.write(json.dumps({
-            "status":"0",
+            "status":status,
             "msg":apimsg
         }).encode('utf-8'))
         return
