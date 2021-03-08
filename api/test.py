@@ -1,7 +1,7 @@
 # -*- coding: utf8 -*-
 import requests
 import json
-from http.server import BaseHTTPRequestHandler
+from http.server import HTTPServer,BaseHTTPRequestHandler
 import json
 import urllib.parse as urlparse
 
@@ -45,9 +45,14 @@ class handler(BaseHTTPRequestHandler):
             funcback = getTocken(id=apiid,secert=apisecert,msg=apimsg,agentId=apiagentId)
             funcinfo = funcback[1]
             funcstatus = funcback[0]
+            funcmsg = apimsg
         else:
             funcinfo = '缺少参数，发送失败，请检查是否有参数缺少'
             funcstatus = '1'
+            if apimsg:
+                funcmsg = apimsg
+            else:
+                funcmsg = '没有填写msg参数'
 
         self.send_response(200)
         self.send_header('Access-Control-Allow-Origin', '*')
@@ -55,7 +60,7 @@ class handler(BaseHTTPRequestHandler):
         self.end_headers()
         backmsg = json.dumps({
             "status":funcstatus,
-            "msg":apimsg,
+            "msg":funcmsg,
             "info": funcinfo
         })
 
