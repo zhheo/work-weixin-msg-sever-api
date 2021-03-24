@@ -2,9 +2,9 @@
 import requests
 import json
 from http.server import BaseHTTPRequestHandler
-import json
 import urllib.parse as urlparse
 
+# 获取tocken
 def getTocken(id,secert,msg,agentId):
     url = "https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=" + id + "&corpsecret=" + secert
 
@@ -13,6 +13,7 @@ def getTocken(id,secert,msg,agentId):
     # print(tocken_json['access_token'])
     sendText(tocken=tocken_json['access_token'],agentId=agentId,msg=msg)
 
+# 发送请求
 def sendText(tocken,agentId,msg):
     sendUrl = "https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token=" + tocken
     # print(sendUrl)
@@ -29,6 +30,7 @@ def sendText(tocken,agentId,msg):
 
 class handler(BaseHTTPRequestHandler):
     def do_GET(self):
+        # 请求的url链接处理
         path = self.path
         parsed = urlparse.urlparse(path)
         querys = urlparse.parse_qs(parsed.query)
@@ -36,16 +38,23 @@ class handler(BaseHTTPRequestHandler):
 
         # 执行方法
         try:
+            # 读取参数
             apiid=querys['id']
             apisecert=querys['secert']
             apiagentId = querys['agentId']
             apimsg = querys['msg']
         except:
-            apimsg = '有必填参数没有填写'
+            apimsg = '有必填参数没有填写，请检查是否填写正确和格式是否错误。详情可以参阅：https://blog.zhheo.com/p/1e9f35bc.html'
             status = 1
         else:
-            getTocken(id=apiid,secert=apisecert,msg=apimsg,agentId=apiagentId)
-            status = 0
+            try:
+                # 执行主程序
+                getTocken(id=apiid,secert=apisecert,msg=apimsg,agentId=apiagentId)
+            except:
+                status = 1
+                apimsg = '主程序运行时出现错误，请检查参数是否填写正确。详情可以参阅：https://blog.zhheo.com/p/1e9f35bc.html'
+            else:
+                status = 0
 
         self.send_response(200)
         self.send_header('Access-Control-Allow-Origin', '*')
