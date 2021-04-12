@@ -17,7 +17,9 @@
 
 ## 使用教程
 
-[立即前往](https://blog.zhheo.com/p/1e9f35bc.html)
+[使用腾讯云函数快速部署](https://iqiqiya.com/posts/50818ca6.html)
+
+[使用其他方式部署](https://blog.zhheo.com/p/1e9f35bc.html)
 
 ## 发送方式
 
