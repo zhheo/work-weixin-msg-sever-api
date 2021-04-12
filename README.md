@@ -17,9 +17,15 @@
 
 ## 使用教程
 
-[Vercel接口使用及Vercel/腾讯云开发部署教程](https://blog.zhheo.com/p/1e9f35bc.html)
+[调用及部署教程](https://blog.zhheo.com/p/1e9f35bc.html)
 
-[使用腾讯云函数快速部署](https://iqiqiya.com/posts/50818ca6.html)
+## 接口地址
+
+```
+https://work-weixin-msg-sever-api.vercel.app/api
+```
+
+开箱即用。作者的vercel接口可能会因为使用人数过多有不稳定因素，可以考虑自行使用vercel搭建，部署难度不高。
 
 ## 发送方式
 
@@ -33,3 +39,7 @@ get
 | secert  | str | true | 企业微信应用的应用secert  |
 | agentId | int | true | 企业微信应用的应用agentId |
 | msg     | str | true | 需要发送的内容          |
+
+## 相关文档
+
+[使用腾讯云函数快速部署](https://iqiqiya.com/posts/50818ca6.html)
